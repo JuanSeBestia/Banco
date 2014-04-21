@@ -24,7 +24,7 @@ public class Banco {
 
     public static void main(String[] args) {
 
-        //System.out.println("Argumentos" + args.length);
+        System.out.println("Argumentos" + args.length);
         if (args.length == 0) {
             Integer n = sc.nextInt();
             Integer m = sc.nextInt();
@@ -43,7 +43,7 @@ public class Banco {
         try {
             ThreadOperation hilo1 = new ThreadOperation(0, operands);
             ThreadOperation hilo2 = new ThreadOperation(1, operands);
-            //System.out.println("Empezemos con las Transacciones :");
+            System.out.println("Empezemos con las Transacciones :");
             hilo1.start();
             hilo2.start();
             hilo1.join();
