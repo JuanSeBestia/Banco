@@ -24,7 +24,7 @@ public class Banco {
 
     public static void main(String[] args) {
 
-        //System.out.println("Argumentos" + args.length);
+        //System.out.println("Argumentos" + args.length); //No demebri afectar en nada poner algo aka
         if (args.length == 0) {
             Integer n = sc.nextInt();
             Integer m = sc.nextInt();
@@ -48,7 +48,7 @@ public class Banco {
             hilo2.start();
             hilo1.join();
             hilo2.join();
-            System.out.println("Saldo en el banco: " + cuenta);
+            System.out.println("Tu Embrujado saldo en el banco: " + cuenta);
         } catch (InterruptedException ex) {
             Logger.getLogger(Banco.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error XP:" + ex);
