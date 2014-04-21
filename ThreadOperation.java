@@ -28,7 +28,7 @@ public class ThreadOperation extends Thread {
 
         for (int i = start; i < numop + start; i++) {
             temp = Banco.getCuenta();
-            //System.out.println("Se esta sumando " + Operands[i] + " con " + temp + "por la persona" + pers);
+            System.out.println("Se esta sumando " + Operands[i] + " con " + temp + "por la persona" + pers);
             temp = temp + Integer.parseInt(Operands[i]);
             Banco.setCuenta(temp);
         }
