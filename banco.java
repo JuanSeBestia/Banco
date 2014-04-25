@@ -1,73 +1,59 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package banco;
 
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
+import akka.actor.UntypedActor;
 
-/**
- *
- * @author zebastit
- */
 public class Banco {
+	
+	public static void main(String[] args) {
 
-    /**
-     * @param args the command line arguments
-     * Aqui estaran el # de operaciones (0,1) y las mismas operaciones (2,n)
-     */
-    private static Integer cuenta = new Integer(0);
-    private static String[] operands;
-    public static Scanner sc = new Scanner(System.in);
+		ActorSystem system = ActorSystem.create("Transacciones");
 
-    public static void main(String[] args) {
+		ActorRef Cliente1 = system.actorOf(Props.create(Cliente.class),"Cliente1");
+		
+		ActorRef Cliente2 = system.actorOf(Props.create(Cliente.class),"Cliente2");
 
-        //System.out.println("Argumentos" + args.length); //No demebri afectar en nada poner algo aka
-        if (args.length == 0) {
-            Integer n = sc.nextInt();
-            Integer m = sc.nextInt();
-            String[] aux = new String[n + m + 2];
-            aux[0] = n.toString();
-            aux[1] = m.toString();
-            for (int i = 2; i < n + m + 2; i++) {
-                aux[i] = sc.next();
-            }
-            
-            operands = aux;
-        } else {
+		Cliente1.tell(47, null);
+		Cliente1.tell(10, null);
+		Cliente1.tell(-5, null);
 
-            operands = args;
-        }
-        try {
-            ThreadOperation hilo1 = new ThreadOperation(0, operands);
-            ThreadOperation hilo2 = new ThreadOperation(1, operands);
-            //System.out.println("Empezemos con las Transacciones :");
-            hilo1.start();
-            hilo2.start();
-            hilo1.join();
-            hilo2.join();
-            System.out.println("Tu Embrujado saldo en el banco: " + cuenta);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Banco.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Error XP:" + ex);
-        }
+		Cliente2.tell(-15, null);
+		Cliente2.tell(5, null);
 
+		system.shutdown();
 
-    }
+		system.awaitTermination();
+		
+		
+		System.out.println("Saldo en la cuenta: " + Cliente.cuenta);
 
-    /**
-     * @return the cuenta
-     */
-    public static Integer getCuenta() {
-        return cuenta;
-    }
+	}
 
-    /**
-     * @param aCuenta the cuenta to set
-     */
-    public static void setCuenta(Integer aCuenta) {
-        cuenta = aCuenta;
-    }
+}
+
+class Cliente extends UntypedActor {
+	
+	static Integer cuenta = 0;
+
+	@Override
+	public void onReceive(Object operacion) throws Exception {
+
+		if (operacion instanceof Integer) {
+
+			Integer o = (Integer) operacion;
+			
+			cuenta += o;
+			//System.out.println(cuenta);
+
+		}
+
+		else {
+
+			unhandled(operacion);
+
+		}
+
+	}
 }
